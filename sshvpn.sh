@@ -23,14 +23,7 @@
 #
 #Sshvpn.sh create an vpn using ssh local forwards.
 
-forwards[0]='vmail.atcomputing.nl,993,steen.atcomputing.nl,22,jelled'
-forwards[1]='vmail.atcomputing.nl,25,steen.atcomputing.nl,22,jelled'
-forwards[2]='jira.atcomputing.nl,8443,steen.atcomputing.nl,22,jelled'
-forwards[3]='rs-nm.atcomputing.nl,80,steen.atcomputing.nl,22,jelled'
-forwards[4]='rs-nm.atcomputing.nl,443,steen.atcomputing.nl,22,jelled'
-forwards[5]='rs-am.atcomputing.nl,80,steen.atcomputing.nl,22,jelled'
-forwards[6]='rs-am.atcomputing.nl,443,steen.atcomputing.nl,22,jelled'
-forwards[7]='atcamgr.atcomputing.nl,22,steen.atcomputing.nl,22,jelled'
+forwards[0]='mail.epsilix.nl,993,wormhole.epsilix.nl,22,jelled'
 
 ssh_key='/home/jelled/.ssh/id_rsa'
 
