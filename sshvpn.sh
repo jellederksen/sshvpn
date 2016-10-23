@@ -21,9 +21,16 @@
 #
 #sshvpn create a vpn using OpenSSH local forwards.
 
-forward[0]='demo.epsilix.nl,993,wormhole.epsilix.nl,22,jelle'
+forward[0]='vmail.atcomputing.nl,993,steen.atcomputing.nl,22,jelled'
+forward[1]='vmail.atcomputing.nl,25,steen.atcomputing.nl,22,jelled'
+forward[2]='jira.atcomputing.nl,8443,steen.atcomputing.nl,22,jelled'
+forward[3]='rs-nm.atcomputing.nl,80,steen.atcomputing.nl,22,jelled'
+forward[4]='rs-nm.atcomputing.nl,443,steen.atcomputing.nl,22,jelled'
+forward[5]='rs-am.atcomputing.nl,80,steen.atcomputing.nl,22,jelled'
+forward[6]='rs-am.atcomputing.nl,443,steen.atcomputing.nl,22,jelled'
+forward[7]='atcamgr.atcomputing.nl,22,steen.atcomputing.nl,22,jelled'
 
-ssh_key='/home/jelle/.ssh/id_rsa'
+ssh_key='/home/jelled/.ssh/id_rsa'
 
 #Do not edit below this line####################################################
 me="${0##*/}"
@@ -33,6 +40,13 @@ ip_regex='^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0
 user_regex='^[a-z_][a-z0-9_]{0,32}$'
 pid_file='/tmp/sshvpn.pid'
 hosts_file='/etc/hosts'
+
+usage() {
+	echo "usage: ${me} [ -s ] [ -k ] [ -h ]
+	-s: start sshvp
+	-k: kill sshvp
+	-h: show usage" >&2
+}
 
 err() {
 	echo "${0##*/}: ${1}" >&2
@@ -124,7 +138,7 @@ check_port() {
 #the host file pointing to the loopback interface will create our transparent
 #vpn.
 configure_networking() {
-	#If a IP-address is given and it not in the /etc/hosts file add it.
+	#If a IP-address is given and it's not in the /etc/hosts file add it.
 	#The IP-address first octet is changed to 127 so we can force traffic
 	#trough the tunnel. We add a comment ${me} after the IP-address so we
 	#can filter out the address later when we want to remove it from the
@@ -218,36 +232,40 @@ start_vpn() {
 	done
 }
 
-#Kill all the OpenSSH forwards and clean up the pid file.
+#When the pid file exists kill all the PID's in it and remove the pid file.
 kill_forward() {
-	while read pid ; do
-		if ! kill ${pid} > "${dn}" 2>&1; then
-			err "failed to kill ${pid}"
-			return 1
-		fi
+	if [[ -f $pid_file ]]; then
+		while read pid ; do
+			if ! kill ${pid} > "${dn}" 2>&1; then
+				err "failed to kill ${pid}"
+				return 1
+			fi
 		done<"${pid_file}"
 		if ! rm "${pid_file}" > "${dn}" 2>&1; then
 			err "failed to remove ${pid_file}"
 			return 1
 		fi
-	return 0
+	fi
 }
 
-#Remove all the IP-addressen on the loopback interface we added for the OpenSSH
+#Remove all the IP-addresses on the loopback interface we added for the OpenSSH
 #forwards. We can identify the IP-addresses in the /etc/hosts file wearing the
-# comment from the variable ${me}.
+#comment from the variable ${me}.
 delete_lo_ip() {
 	#Add all sshvpn IP-addresses to the array loopback_ips
 	loopback_ips=( $(grep "${me}" /etc/hosts | cut -d ' ' -f 1) )
-	#Remove the the loopback IP-addresses from the lo interface,
 	for i in "${loopback_ips[@]}"; do
-		if ! ip addr del "${i}/32" dev lo; then
-			err "failed to remove IP from lo"
-			return 1
+		#Check if the IP-address is still on the interface.
+		if ip addr show dev lo | grep -q "${i}"; then
+			#If the IP-address is still on the interface remove it.
+			if ! ip addr del "${i}/32" dev lo; then
+				err "failed to remove IP from lo"
+				return 1
+			fi
 		fi
 	done
-	return 0
 }
+
 #Check if there are entries in the /etc/hosts file wearing the ${me} tag and
 #if so remove them. We dont want these entries when the tunnels are not up.
 delete_host_resolv() {
@@ -274,12 +292,11 @@ kill_vpn() {
 		err "failed to remove host from resolv"
 		return 1
 	fi
-	return 0
 }
 
 main() {
 	if [[ -z ${1} ]]; then
-		err "${usage}"
+		usage
 		exit 1
 	else
 		while getopts skhv pars; do
@@ -298,11 +315,11 @@ main() {
 				exit 0
 				;;
 			h)
-				mes "${usage}"
+				usage
 				exit 0
 				;;
 			*)
-				err "${usage}"
+				usage
 				exit 99
 				;;
 			esac
