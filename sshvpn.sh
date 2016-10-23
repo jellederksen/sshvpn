@@ -1,7 +1,5 @@
 #!/bin/bash
-#
-#Create a VPN with OpenSSH tunnels
-#
+
 #Copyright (c) 2016 Jelle Derksen jelle@epsilix.nl
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -20,12 +18,12 @@
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
-#
-#Sshvpn.sh create an vpn using ssh local forwards.
 
-forwards[0]='mail.epsilix.nl,993,wormhole.epsilix.nl,22,jelled'
+#Sshvpn.sh create an vpn using ssh local forward.
 
-ssh_key='/home/jelled/.ssh/id_rsa'
+forward[0]='demo.epsilix.nl,993,wormhole.epsilix.nl,22,jelle'
+
+ssh_key='/home/jelle/.ssh/id_rsa'
 
 #Do not edit below this line####################################################
 me="${0##*/}"
@@ -154,7 +152,7 @@ start_vpn() {
 		print_stderr "failed checks"
 		return 1
 	fi
-	for f in "${forwards[@]}"; do
+	for f in "${forward[@]}"; do
 		#h = hostname, p = port, s = ssh host, x = port, u = username
 		while IFS=',' read h p s x u; do
 			if ! check_forward "${h}" "${p}" "${s}" "${x}" "${u}"; then
