@@ -62,8 +62,8 @@ hosts_file='/etc/hosts'
 
 usage() {
 	echo "usage: ${me} [ -s ] [ -k ] [ -h ]
-	-s: start sshvp
-	-k: kill sshvp
+	-s: start sshvpn
+	-k: kill sshvpn
 	-h: show usage" >&2
 }
 
