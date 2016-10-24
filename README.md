@@ -2,7 +2,7 @@
 
 sshvpn create a vpn using OpenSSH forwards.
 
-sshvpn creates a transparent VPN by setting up ssh forwards on the loopback
+sshvpn creates a transparent VPN by setting up OpenSSH forwards on the loopback
 interface and adding host entries to the hosts file. For every forward there
 will be an IP-address on the loopback interface with the first octet changed
 to 127. The last three octets will contain the original IP-address. All
@@ -20,12 +20,12 @@ forward[4]='https.epsilix.nl,443,wormhole.epsilix.nl,22,jelle'
 
 forward_host: Host to forward traffic to.
 forward_port: Port to forward traffic to on host to forward to.
-stepping_stone: The ssh stepping stone server that forwards the traffic.
-ssh_port: The OpenSSH port on the ssh stepping stone server.
-username: The username used for the ssh forwards on the stepping stone.
+stepping_stone: The OpenSSH stepping stone server that forwards the traffic.
+ssh_port: The OpenSSH port on the OpenSSH stepping stone server.
+username: The username used for the OpenSSH forwards on the stepping stone.
 
-Before using sshvpn setup passwordless access to the SSH stepping stone server
-for the specified username. You can set the ssh_key variable to point to your
-private key so sshvpn can use it to create the tunnels.
+Before using sshvpn setup passwordless access to the OpenSSH stepping stone
+server for the specified username. You can set the ssh_key variable to point
+to your private key so sshvpn can use it to create the tunnels.
 
 ssh_key='/home/jelle/.ssh/id_rsa'
