@@ -18,11 +18,11 @@ forward array example:
     forward[3]='www.epsilix.nl,80,wormhole.epsilix.nl,22,jelle'
     forward[4]='https.epsilix.nl,443,wormhole.epsilix.nl,22,jelle'
 
-    forward_host: Host to forward traffic to.
-    forward_port: Port to forward traffic to on host to forward to.
-    stepping_stone: The OpenSSH stepping stone server that forwards the traffic.
-    ssh_port: The OpenSSH port on the OpenSSH stepping stone server.
-    username: The username used for the OpenSSH forwards on the stepping stone.
+* `forward_host`: Host to forward traffic to.
+* `forward_port`: Port to forward traffic to on host to forward to.
+* `stepping_stone`: The OpenSSH stepping stone server that forwards the traffic.
+* `ssh_port`: The OpenSSH port on the OpenSSH stepping stone server.
+* `username`: The username used for the OpenSSH forwards on the stepping stone.
 
 Before using sshvpn setup passwordless access to the OpenSSH stepping stone
 server for the specified username. You can set the ssh_key variable to point
