@@ -46,10 +46,10 @@
 forward[0]='forward_host,forward_port,stepping_stone,ssh_port,username'
 
 #Before using sshvpn setup passwordless access to the SSH stepping stone server
-#for the specified username. You can set the ssh_key variable to point to your
+#for the specified username. You can set the $ssh_key variable to point to your
 #private key so sshvpn can use it to create the tunnels.
 
-ssh_key='/home/jelled/.ssh/id_rsa'
+ssh_key='/home/jelle/.ssh/id_rsa'
 
 #Do not edit below this line####################################################
 me="${0##*/}"
