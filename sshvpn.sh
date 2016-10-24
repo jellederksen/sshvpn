@@ -27,7 +27,7 @@
 #first octet changed to 127. The last three octets will contain the
 #original IP-address. All forwards in sshvpn are defined in the
 #"${forward}" array. The syntax is very simple and consists of comma
-#separated values. See the next example for more information.
+#separated values. See the forward array example for more information.
 
 #forward array example:
 
@@ -77,7 +77,7 @@ mes() {
 
 #Check if we have root privileges. We need root rights to be able to bind to
 #ports below 1023 on the loopback interface. Without it we won't be able to
-#create a transparent tunnel.If this function is executed while starting
+#create a transparent tunnel. If this function is executed while starting
 #sshvpn, we also want to check if a pid file exists. sshvpn should not be
 #able to start while being active.
 do_checks() {
@@ -208,7 +208,7 @@ create_forward() {
 	#${3} Port to forward to from the SSH stepping stone server.
 	#${4} hostname or IP-address of the SSH stepping stone server.
 	#${5} OpenSSH port on the SSH stepping stone server.
-	#${dn} redirect errors to /dev/null we dont want to see them.
+	#${dn} redirect errors to /dev/null we don't want to see them.
 	if ssh -fNl "${6}" -i "${ssh_key}" -L "${1}:${3}:${2}:${3}" "${4}" -p "${5}" > "${dn}" 2>&1; then
 		#Determine PID of startend OpenSSH forward and add
 		#it to the pid file in the pid file.
@@ -286,7 +286,7 @@ delete_lo_ip() {
 }
 
 #Check if there are entries in the /etc/hosts file wearing the ${me} tag and
-#if so remove them. We dont want these entries when the tunnels are not up.
+#if so remove them. We don't want these entries when the tunnels are not up.
 delete_host_resolv() {
 	if ! sed -i "/#${me}/d" "${hosts_file}"; then
 		err "failed to remove host from $hosts_file"
