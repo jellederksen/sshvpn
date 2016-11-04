@@ -172,7 +172,7 @@ configure_networking() {
 		#stone server. The hostname and IP-adress are added to the
 		#/etc/hosts file. We change the first octet of the IP-address
 		#to 127 so we can redirect the traffic trough the tunnel.
-		ip="$(ssh -l "${3}" -i "${ssh_key}" "${2}" "dig ${1} +short" 2> "${dn}")"
+		ip="$(ssh -p "${5}" -l "${3}" -i "${ssh_key}" "${2}" "dig ${1} +short" 2> "${dn}")"
 		[[ -z ${ip} ]] && err "failed to resolv ${1}" && return 1
 		ip="127.${ip#*.}"
 		if ! grep -q "${1}" "${hosts_file}"; then
@@ -239,7 +239,7 @@ start_vpn() {
 				err "forward variable incorrect"
 				return 1
 			fi
-			if ! configure_networking "${h}" "${s}" "${u}" "${p}"; then
+			if ! configure_networking "${h}" "${s}" "${u}" "${p}" "${x}"; then
 				err "failed to configure networking"
 				return 1
 			fi
