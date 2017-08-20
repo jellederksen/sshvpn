@@ -138,7 +138,7 @@ check_port() {
 		#Restore stderr by opening fd2 as a duplicate of fd4
 		exec 2>&4; exec 4>&-
 		#Close network connection to localhost:port
-		#exec 5<&-; exec 5>&-
+		exec 5<&-; exec 5>&-
 		#Daemon is listening port is not free.
 		return 1
 	else
